@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Ticket</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <span>Tatua</span>
+        </div>
+        <a href="index.html" class="nav-item">Back to List</a>
+    </div>
+
+    <div class="container">
+        <h2>Ticket Details</h2>
+        <div id="ticket-details">
+            <p><strong>Ticket ID:</strong> <span id="ticket-id"></span></p>
+            <p><strong>Raised by:</strong> <span id="ticket-name"></span></p>
+            <p><strong>Email:</strong> <span id="ticket-email"></span></p>
+            <p><strong>Message:</strong> <span id="ticket-message"></span></p>
+            <p><strong>Date Created:</strong> <span id="ticket-date"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+           
+            const urlParams = new URLSearchParams(window.location.search);
+            const ticketId = parseInt(urlParams.get('id'));
+
+            // Fetch tickets from sessionStorage
+            const tickets = JSON.parse(sessionStorage.getItem('tickets')) || [];
+            const ticket = tickets.find(t => t.id === ticketId);
+
+            if (ticket) {
+                document.getElementById('ticket-id').textContent = ticket.id;
+                document.getElementById('ticket-name').textContent = ticket.name;
+                document.getElementById('ticket-email').textContent = ticket.email;
+                document.getElementById('ticket-message').textContent = ticket.message;
+                document.getElementById('ticket-date').textContent = ticket.date;
+            } else {
+                document.querySelector('.container').innerHTML = '<p>Ticket not found.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>
