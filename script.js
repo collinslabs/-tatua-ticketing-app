@@ -1,6 +1,6 @@
-// part2-session-storage: Session Storage Implementation
+// part3-local-storage: Local Storage Implementation
 document.addEventListener('DOMContentLoaded', function() {
-    const storedTickets = sessionStorage.getItem('tickets');
+    const storedTickets = localStorage.getItem('tickets');
     if (storedTickets) {
         tickets.push(...JSON.parse(storedTickets));
         updateTicketTable();
@@ -22,7 +22,7 @@ document.getElementById('ticket-form').addEventListener('submit', function(event
     };
     
     tickets.push(newTicket);
-    sessionStorage.setItem('tickets', JSON.stringify(tickets));
+    localStorage.setItem('tickets', JSON.stringify(tickets));
     updateTicketTable();
     this.reset();
 });
