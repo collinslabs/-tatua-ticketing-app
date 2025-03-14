@@ -359,15 +359,6 @@ const popup = {
     }
 };
 
-// Initialize popup when the DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    popup.init();
-    
-    // Rest of your existing code...
-});
-
-
-
 // Global variables
 let tickets = [];
 let currentTicketId = 1;
