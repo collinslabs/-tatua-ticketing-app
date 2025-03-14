@@ -359,18 +359,17 @@ const popup = {
     }
 };
 
-// Initialize popup when the DOM is loaded
+
 document.addEventListener('DOMContentLoaded', function() {
     popup.init();
     
-    // Rest of your existing code...
+    
 });
 
-// Global variables
+
 let tickets = [];
 let currentTicketId = 1;
 
-// Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     // Check which page we're on
     const isTicketForm = document.getElementById('ticketForm');
