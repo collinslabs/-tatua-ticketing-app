@@ -390,9 +390,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Load tickets from sessionStorage
+
+// Load tickets from localStorage
 function loadTicketsFromStorage() {
-    const storedTickets = sessionStorage.getItem('tickets');
+    const storedTickets = localStorage.getItem('tickets');
+
     if (storedTickets) {
         tickets = JSON.parse(storedTickets);
         // Find the highest ticket ID to set the currentTicketId
@@ -403,9 +405,11 @@ function loadTicketsFromStorage() {
     }
 }
 
-// Save tickets to sessionStorage
+
+// Save tickets to localStorage
 function saveTicketsToStorage() {
-    sessionStorage.setItem('tickets', JSON.stringify(tickets));
+    localStorage.setItem('tickets', JSON.stringify(tickets));
+
 }
 
 // Setup the ticket form
@@ -453,7 +457,9 @@ function setupTicketForm() {
         // Add ticket to array
         tickets.push(newTicket);
         
-        // Save to sessionStorage
+
+        // Save to localStorage
+
         saveTicketsToStorage();
         
         // Reset form
