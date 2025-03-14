@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tatua - Tickets List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="logo-square">T</span>
+            <span class="logo-text">Tatua</span>
+        </div>
+        <nav>
+            <a href="index.html">Raise Ticket</a>
+            <a href="view_ticketlist.html" class="active">Tickets List</a>
+        </nav>
+    </header>
+
+    <main class="container ticket-list-container">
+        <div class="ticket-controls">
+            <div class="ticket-sort">
+                <button id="sortButton" class="control-button">
+                    <i class="fas fa-sort"></i> Sort
+                </button>
+            </div>
+            <div class="ticket-filter">
+                <button id="filterButton" class="control-button">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </div>
+            <div class="ticket-refresh">
+                <button id="refreshButton" class="control-button">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="ticket-table-container">
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Raised by</th>
+                        <th>Ticket Details</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketTableBody">
+                    <!-- Tickets will be populated here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Ticket context menu -->
+        <div id="contextMenu" class="context-menu">
+            <ul>
+                <li id="downloadAttachment">Download local attachment</li>
+                <li id="triggerEmail">Trigger call (preferred contact) instead</li>
+                <li id="triggerCall">Trigger call (preferred contact) by email</li>
+                <li id="addAsTicket">Add as a copy to the bottom of the ticket</li>
+                <li id="deleteTicket">Delete the ticket</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Popup Overlay -->
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-container">
+            <div class="popup-header">
+                <h3 id="popupTitle">Notification</h3>
+                <button id="popupClose" class="popup-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div id="popupContent"></div>
+                <div class="popup-actions" id="popupActions">
+                    <button class="popup-btn popup-btn-secondary" id="popupCancel">Cancel</button>
+                    <button class="popup-btn popup-btn-primary" id="popupConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sort Popup -->
+<div id="sortPopupOverlay" class="sort-popup-overlay">
+    <div class="sort-popup-container">
+        <div class="sort-popup-header">
+            <h3>Sort Table</h3>
+            <button id="sortPopupClose" class="sort-popup-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="sort-popup-body">
+            <div id="sortRows">
+                <!-- Sort rows will be added dynamically -->
+                <div class="sort-row">
+                    <div class="sort-column">
+                        <label>Column:</label>
+                        <select class="column-select">
+                            <option value="">Select Column</option>
+                            <option value="ticket_id">Ticket ID</option>
+                            <option value="raised_by">Raised by</option>
+                            <option value="ticket_details">Ticket Details</option>
+                            <option value="date_created">Date Created</option>
+                        </select>
+                    </div>
+                    <div class="sort-order">
+                        <label>Order:</label>
+                        <select class="order-select">
+                            <option value="">Select Order</option>
+                            <option value="ascending">Ascending</option>
+                            <option value="descending">Descending</option>
+                        </select>
+                    </div>
+                    <div class="sort-remove">
+                        <button class="remove-sort-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="add-sort-row">
+                <label id="addSortBtn">
+                    <i class="fas fa-plus"></i> Add Sorter
+                </label>
+            </div>
+            <div class="sort-actions">
+                <button class="sort-btn sort-btn-secondary" id="resetSortingBtn">Reset Sorting</button>
+                <button class="sort-btn sort-btn-primary" id="submitSortBtn">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Filter Popup -->
+    <div id="filterPopupOverlay" class="filter-popup-overlay">
+        <div class="filter-popup-container">
+            <div class="filter-popup-header">
+                <h3>Filter Table</h3>
+                <button id="filterPopupClose" class="filter-popup-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="filter-popup-body">
+                <div id="filterRows">
+                    <!-- Filter rows will be added dynamically -->
+                    <div class="filter-row">
+                        <div class="filter-column">
+                            <label>Column:</label>
+                            <select class="column-select">
+                                <option value="">Select Column</option>
+                                <option value="ticket_id">Ticket ID</option>
+                                <option value="raised_by">Raised by</option>
+                                <option value="email_address">Email Address</option>
+                                <option value="ticket_details">Ticket Details</option>
+                                <option value="date_created">Date Created</option>
+                            </select>
+                        </div>
+                        <div class="filter-relation">
+                            <label>Relation:</label>
+                            <select class="relation-select">
+                                <option value="">Select Relation</option>
+                                <option value="equals">Equals</option>
+                                <option value="contains">Contains</option>
+                                <option value="starts_with">Starts with</option>
+                                <option value="ends_with">Ends with</option>
+                                <option value="greater_than">Greater than</option>
+                                <option value="less_than">Less than</option>
+                            </select>
+                        </div>
+                        <div class="filter-value">
+                            <label>Filter Value:</label>
+                            <input type="text" class="filter-value-input" placeholder="Enter Value">
+                        </div>
+                        <div class="filter-remove">
+                            <button class="remove-filter-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-filter-row">
+                    <button id="addFilterBtn">
+                        <i class="fas fa-plus"></i> Add Filter
+                    </button>
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-btn filter-btn-secondary" id="resetFilterBtn">Reset Filter</button>
+                    <button class="filter-btn filter-btn-primary" id="submitFilterBtn">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="ticketScript.js"></script>
+</body>
+</html>

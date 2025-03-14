@@ -3,245 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tatua: Ticketing System</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tatua - Raise Ticket</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
-    <div class="header">
+    <header>
         <div class="logo">
-            <div class="logo-icon"></div>
-            <span>Tatua</span>
+            <span class="logo-square">T</span>
+            <span class="logo-text">Tatua</span>
         </div>
-        <a href="#" class="nav-item" id="raise-ticket-link">Raise Ticket</a>
-        <a href="ticket" class="nav-item active" id="tickets-list-link">Tickets List</a>
-    </div>
-    
-    <!-- Raise Ticket Form -->
-    <div class="container" id="raise-ticket-container">
-        <p class="form-header">Have any enquiries? Fill this form and we will get back to you as soon as possible</p>
-        
-        <form id="ticket-form">
-            <div class="form-group">
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
+        <nav>
+            <a href="index.html" class="active">Raise Ticket</a>
+            <a href="view_ticketlist.html">Tickets List</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="form-container">
+            <h2>Have any enquiries? Fill this form and we will get back to you as soon as possible</h2>
             
-            <div class="form-group">
-                <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone">
-            </div>
-            
-            <div class="form-group">
-                <label for="subject">Subject:</label>
-                <select id="subject" name="subject" required>
-                    <option value="" disabled selected></option>
-                    <option value="technical">Technical Issue</option>
-                    <option value="billing">Billing Question</option>
-                    <option value="feature">Feature Request</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label>Preferred Contact</label>
-                <div class="contact-options">
-                    <div class="contact-option">
-                        <input type="radio" id="email-contact" name="contact" value="email" checked>
-                        <label for="email-contact">Email</label>
-                    </div>
-                    <div class="contact-option">
-                        <input type="radio" id="phone-contact" name="contact" value="phone">
-                        <label for="phone-contact">Phone</label>
+            <form id="ticketForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="" disabled selected></option>
+                        <option value="Mobile App is slow">Mobile App is slow</option>
+                        <option value="Technical Issue">Technical Issue</option>
+                        <option value="Account Access">Account Access</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Preferred Contact:</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="preferredContact" value="Email" checked>
+                            <span class="radio-custom"></span>
+                            Email
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="preferredContact" value="Phone">
+                            <span class="radio-custom"></span>
+                            Phone
+                        </label>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Attachment</label>
-                <input type="file" id="attachment" name="attachment" class="file-input">
-            </div>
-            
-            <div class="checkbox-container">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">I agree to the <a href="#" style="color: #6b5b95;">Terms and Conditions</a></label>
-            </div>
-            
-            <button type="submit" class="submit-btn">Submit</button>
-        </form>
-    </div>
-    
-    <!-- Tickets List -->
-    <div class="container" id="tickets-list-container" style="display: none;">
-        <div class="list-header">
-            <div></div>
-            <a href="#" class="refresh-btn">
-                <span class="refresh-icon">🔄</span>
-                Refresh
-            </a>
+                
+                <div class="form-group">
+                    <label for="attachment">Attachment:</label>
+                    <div class="file-input-container">
+                        <input type="file" id="attachment" name="attachment">
+                        <button type="button" class="file-select-button">Choose File</button>
+                        <span class="file-name">No file chosen</span>
+                    </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the Terms and Conditions</label>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="submit-btn">Submit</button>
+                </div>
+            </form>
         </div>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Ticket ID</th>
-                    <th>Raised by</th>
-                    <th>Ticket Details</th>
-                    <th>Date Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="ticket-list">
-                <tr class="ticket-row">
-                    <td>1</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>2</td>
-                    <td>
-                        Luis Litt<br>
-                        <span class="ticket-email">+254712345678</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>3</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>4</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>5</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>6</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                        <div class="tooltip">Show popup with more information</div>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>7</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                    </td>
-                </tr>
-                <tr class="ticket-row">
-                    <td>8</td>
-                    <td>
-                        Harvey Specter<br>
-                        <span class="ticket-email">harvey.specter@suits.us</span>
-                    </td>
-                    <td>Mobile App is slow<br>Logging in is taking 5 mins and...</td>
-                    <td>2024-03-06 18:00:00</td>
-                    <td class="actions">
-                        <span class="action-icon">ℹ️</span>
-                        <span class="action-icon">⬇️</span>
-                        <span class="action-icon">📞</span>
-                        <span class="action-icon">📋</span>
-                        <span class="action-icon">✏️</span>
-                        <span class="action-icon delete-icon">🗑️</span>
-                        <div class="tooltip">Download ticket attachment</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    </main>
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-container">
+            <div class="popup-header">
+                <h3 id="popupTitle">Notification</h3>
+                <button id="popupClose" class="popup-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div id="popupContent"></div>
+                <div class="popup-actions" id="popupActions">
+                    <button class="popup-btn popup-btn-secondary" id="popupCancel">Cancel</button>
+                    <button class="popup-btn popup-btn-primary" id="popupConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
     </div>
-    
+    <script src="ticketScript.js"></script>
 </body>
 </html>
