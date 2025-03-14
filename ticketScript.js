@@ -196,7 +196,7 @@ const popup = {
             this.container.style.maxWidth = '400px';
         }
 
-        // Create custom buttons
+        
         let buttonsHtml = '';
         settings.buttons.forEach(button => {
             const buttonClass = button.primary ? 'popup-btn-primary' : 'popup-btn-secondary';
@@ -205,7 +205,6 @@ const popup = {
         
         this.actionButtons.innerHTML = buttonsHtml;
 
-        // Add event listeners to buttons
         settings.buttons.forEach(button => {
             const buttonElement = document.getElementById(button.id);
             buttonElement.addEventListener('click', () => {
@@ -338,16 +337,16 @@ const popup = {
     // Open the popup
     open: function() {
         this.overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        document.body.style.overflow = 'hidden'; 
     },
 
-    // Close the popup
+    
     close: function() {
         this.overlay.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.overflow = ''; 
     },
 
-    // Get icon class based on type
+    
     getIconClass: function(type) {
         switch(type) {
             case 'success': return 'check-circle';
@@ -359,21 +358,21 @@ const popup = {
     }
 };
 
-// Initialize popup when the DOM is loaded
+
 document.addEventListener('DOMContentLoaded', function() {
     popup.init();
     
 });
 
-// Global variables
+
 let tickets = [];
 let currentTicketId = 1;
 
-// Initialize the application
+
 document.addEventListener('DOMContentLoaded', function() {
     loadTicketsFromStorage();
     
-    // Check which page we're on
+ 
     const isTicketForm = document.getElementById('ticketForm');
     const isTicketList = document.getElementById('ticketTableBody');
     
@@ -387,12 +386,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Load tickets from sessionStorage
+
 function loadTicketsFromStorage() {
     const storedTickets = sessionStorage.getItem('tickets');
     if (storedTickets) {
         tickets = JSON.parse(storedTickets);
-        // Find the highest ticket ID to set the currentTicketId
+       
         if (tickets.length > 0) {
             const highestId = Math.max(...tickets.map(ticket => ticket.id));
             currentTicketId = highestId + 1;
@@ -400,19 +399,19 @@ function loadTicketsFromStorage() {
     }
 }
 
-// Save tickets to sessionStorage
+
 function saveTicketsToStorage() {
     sessionStorage.setItem('tickets', JSON.stringify(tickets));
 }
 
-// Setup the ticket form
+
 function setupTicketForm() {
     const ticketForm = document.getElementById('ticketForm');
     const fileInput = document.getElementById('attachment');
     const fileNameDisplay = document.querySelector('.file-name');
     const fileSelectButton = document.querySelector('.file-select-button');
     
-    // Handle file selection
+   
     fileInput.addEventListener('change', function(e) {
         const fileName = e.target.files.length > 0 ? e.target.files[0].name : 'No file chosen';
         fileNameDisplay.textContent = fileName;
@@ -422,11 +421,11 @@ function setupTicketForm() {
         fileInput.click();
     });
     
-    // Handle form submission
+ 
     ticketForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get form values
+      
         const fullName = document.getElementById('fullName').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -434,7 +433,7 @@ function setupTicketForm() {
         const message = document.getElementById('message').value;
         const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
         
-        // Create new ticket
+      
         const newTicket = {
             id: currentTicketId++,
             fullName: fullName,
@@ -447,17 +446,17 @@ function setupTicketForm() {
             dateCreated: new Date().toISOString()
         };
         
-        // Add ticket to array
+      
         tickets.push(newTicket);
         
-        // Save to sessionStorage
+        
         saveTicketsToStorage();
         
-        // Reset form
+       
         ticketForm.reset();
         fileNameDisplay.textContent = 'No file chosen';
         
-        // Show success message with custom popup
+       
         popup.alert({
             title: 'Success',
             message: 'Your ticket has been submitted successfully!',
@@ -471,8 +470,6 @@ function setupTicketForm() {
 }
 
 
-// Display tickets in the table
-// Updated displayTickets function with download and delete icons
 function displayTickets() {
     const tableBody = document.getElementById('ticketTableBody');
     tableBody.innerHTML = '';
@@ -480,7 +477,7 @@ function displayTickets() {
     tickets.forEach(ticket => {
         const row = document.createElement('tr');
         
-        // Format date
+      
         const dateObj = new Date(ticket.dateCreated);
         const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')} ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}:${String(dateObj.getSeconds()).padStart(2, '0')}`;
         
@@ -523,12 +520,11 @@ function displayTickets() {
         tableBody.appendChild(row);
     });
     
-    // Add event listeners to action buttons
+
     addActionButtonListeners();
 }
 
-// Add event listeners to ticket action buttons
-// Updated addActionButtonListeners function with download and delete functionality
+
 function addActionButtonListeners() {
     // View button
     document.querySelectorAll('.view-btn').forEach(btn => {
@@ -541,7 +537,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // Call button
+   
     document.querySelectorAll('.call-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -556,7 +552,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // Email button
+   
     document.querySelectorAll('.email-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -611,7 +607,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // Chat button
+
     document.querySelectorAll('.chat-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -625,7 +621,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // NEW: Download attachment button
+
     document.querySelectorAll('.download-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -643,7 +639,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // NEW: Delete ticket button
+    
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -651,7 +647,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // Context menu button
+   
     document.querySelectorAll('.menu-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -661,9 +657,9 @@ function addActionButtonListeners() {
     });
 }
 
-// Show context menu
+
 function setupContextMenuItems(ticketId) {
-    // Download attachment
+   
     document.getElementById('downloadAttachment').addEventListener('click', function() {
         popup.alert({
             title: 'Download',
@@ -673,7 +669,7 @@ function setupContextMenuItems(ticketId) {
         closeContextMenu();
     });
     
-    // Trigger email
+   
     document.getElementById('triggerEmail').addEventListener('click', function() {
         popup.alert({
             title: 'Contact Changed',
@@ -683,7 +679,7 @@ function setupContextMenuItems(ticketId) {
         closeContextMenu();
     });
     
-    // Trigger call
+ 
     document.getElementById('triggerCall').addEventListener('click', function() {
         popup.alert({
             title: 'Contact Changed',
@@ -693,7 +689,7 @@ function setupContextMenuItems(ticketId) {
         closeContextMenu();
     });
     
-    // Add as copy
+  
     document.getElementById('addAsTicket').addEventListener('click', function() {
         const ticket = tickets.find(t => t.id == ticketId);
         if (ticket) {
@@ -713,7 +709,7 @@ function setupContextMenuItems(ticketId) {
         closeContextMenu();
     });
     
-    // Delete ticket
+  
     document.getElementById('deleteTicket').addEventListener('click', function() {
         popup.confirm({
             title: 'Confirm Deletion',
@@ -736,9 +732,9 @@ function setupContextMenuItems(ticketId) {
         closeContextMenu();
     });
 }
-// New function to download ticket attachment
+
 function downloadAttachment(ticket) {
-    // This is a simulated download function since we don't have real attachments
+    
     popup.custom({
         title: 'Downloading Attachment',
         content: `
@@ -764,7 +760,7 @@ function downloadAttachment(ticket) {
         ]
     });
     
-    // Simulate download progress
+   
     let progress = 0;
     const progressBar = document.getElementById('downloadProgress');
     const progressText = document.getElementById('progressText');
@@ -786,13 +782,13 @@ function downloadAttachment(ticket) {
         }
     }, 150);
     
-    // Add cancel download functionality
+    
     document.getElementById('cancelDownload').addEventListener('click', () => {
         clearInterval(downloadInterval);
     });
 }
 
-// New function to delete ticket with confirmation
+
 function deleteTicketWithConfirmation(ticketId) {
     const ticket = tickets.find(t => t.id == ticketId);
     
@@ -805,16 +801,16 @@ function deleteTicketWithConfirmation(ticketId) {
         confirmText: 'Delete',
         cancelText: 'Cancel',
         onConfirm: function() {
-            // Remove the ticket from the array
+           
             tickets = tickets.filter(t => t.id != ticketId);
             
-            // Save to localStorage
+            
             saveTicketsToStorage();
             
-            // Refresh the display
+           
             displayTickets();
             
-            // Show success message
+            
             popup.alert({
                 title: 'Success',
                 message: `Ticket #${ticketId} has been deleted successfully.`,
@@ -823,9 +819,9 @@ function deleteTicketWithConfirmation(ticketId) {
         }
     });
 }
-// Setup ticket list controls
+
 function setupTicketListControls() {
-    // Refresh button
+    
     document.getElementById('refreshButton').addEventListener('click', function() {
         loadTicketsFromStorage();
         displayTickets();
@@ -838,9 +834,8 @@ function setupTicketListControls() {
     });
 }
 
-// Filter Popup Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+   
     const filterButton = document.getElementById('filterButton');
     const filterPopupOverlay = document.getElementById('filterPopupOverlay');
     const filterPopupClose = document.getElementById('filterPopupClose');
@@ -849,40 +844,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitFilterBtn = document.getElementById('submitFilterBtn');
     const filterRows = document.getElementById('filterRows');
     
-    // Show filter popup
+   
     filterButton.addEventListener('click', function() {
         filterPopupOverlay.style.display = 'flex';
     });
     
-    // Close filter popup
+   
     filterPopupClose.addEventListener('click', function() {
         filterPopupOverlay.style.display = 'none';
     });
     
-    // Add new filter row
+    
     addFilterBtn.addEventListener('click', function() {
         addFilterRow();
     });
     
-    // Handle reset filter button
+  
     resetFilterBtn.addEventListener('click', function() {
         resetFilters();
     });
     
-    // Handle submit filter button
+
     submitFilterBtn.addEventListener('click', function() {
         applyFilters();
         filterPopupOverlay.style.display = 'none';
     });
     
-    // Close popup when clicking outside
+    
     filterPopupOverlay.addEventListener('click', function(event) {
         if (event.target === filterPopupOverlay) {
             filterPopupOverlay.style.display = 'none';
         }
     });
     
-    // Set up filter row removal event delegation
+   
     filterRows.addEventListener('click', function(event) {
         if (event.target.classList.contains('fa-trash-alt') || 
             event.target.classList.contains('remove-filter-btn')) {
@@ -893,7 +888,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Helper function to find closest parent with selector
+    
     function getClosestParent(element, selector) {
         while (element && !element.matches(selector)) {
             element = element.parentElement;
@@ -901,7 +896,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return element;
     }
     
-    // Function to add a new filter row
+    
     function addFilterRow() {
         const newRow = document.createElement('div');
         newRow.className = 'filter-row';
@@ -942,14 +937,14 @@ document.addEventListener('DOMContentLoaded', function() {
         filterRows.appendChild(newRow);
     }
     
-    // Function to reset filters
+   
     function resetFilters() {
-        // Clear all filter rows except the first one
+       
         while (filterRows.children.length > 1) {
             filterRows.removeChild(filterRows.lastChild);
         }
         
-        // Reset the values in the first row
+       
         const firstRow = filterRows.children[0];
         if (firstRow) {
             const columnSelect = firstRow.querySelector('.column-select');
@@ -962,7 +957,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Function to apply filters to the table
+    
     function applyFilters() {
         const filters = [];
         const filterRowElements = filterRows.querySelectorAll('.filter-row');
@@ -1263,24 +1258,19 @@ document.addEventListener('DOMContentLoaded', function() {
             tableBody.appendChild(row);
         });
         
-        // Reinitialize any event listeners for the table rows
+        
         initTableRowEvents();
     }
     
-    // This function would need to be implemented based on your data source
+    
     function loadTickets() {
-        // Implementation depends on how you're loading tickets
-        // Example: fetchTicketsFromAPI().then(data => renderTickets(data));
-        
-        // For demonstration, let's assume you have a function to load tickets
+       
         if (typeof fetchTickets === 'function') {
             fetchTickets();
         }
     }
     
-    // Initialize table row events
     function initTableRowEvents() {
-        // Implementation depends on your table interactions
-        // Example: adding click listeners to the action buttons
+        
     }
 });

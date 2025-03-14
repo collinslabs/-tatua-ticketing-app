@@ -17,7 +17,7 @@ body {
     padding: 20px;
 }
 
-/* Header styles */
+
 header {
     background-color: #2d2d3e;
     color: white;
@@ -552,7 +552,7 @@ input[type="file"] {
     color: #333;
 }
 
-/* Responsive styles */
+
 @media (max-width: 768px) {
     .filter-row {
         flex-direction: column;
@@ -582,7 +582,7 @@ input[type="file"] {
 }
 
 
-/* Download progress bar styles */
+
 .download-progress {
     margin-top: 20px;
 }
@@ -609,13 +609,13 @@ input[type="file"] {
     color: #666;
 }
 
-/* Style for disabled buttons */
+
 .action-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-/* Hover effects for action buttons */
+
 .action-button:hover:not(:disabled) {
     color: #673ab7;
 }
@@ -628,12 +628,11 @@ input[type="file"] {
     color: #4caf50;
 }
 
-/* Additional spacing for action buttons */
 .action-buttons {
     display: flex;
 }
 
-/* Sort Popup Styles */
+/* Popup Styles */
 .sort-popup-overlay {
     position: fixed;
     top: 0;
@@ -780,7 +779,7 @@ input[type="file"] {
     background-color: #e5e7eb;
 }
 
-/* Animation for popup entrance */
+/* Animation for popup */
 @keyframes fadeIn {
     from {
         opacity: 0;
