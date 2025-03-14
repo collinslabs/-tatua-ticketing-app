@@ -374,8 +374,6 @@ let currentTicketId = 1;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    loadTicketsFromStorage();
-    
     // Check which page we're on
     const isTicketForm = document.getElementById('ticketForm');
     const isTicketList = document.getElementById('ticketTableBody');
@@ -389,24 +387,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setupTicketListControls();
     }
 });
-
-// Load tickets from localStorage
-function loadTicketsFromStorage() {
-    const storedTickets = localStorage.getItem('tickets');
-    if (storedTickets) {
-        tickets = JSON.parse(storedTickets);
-        // Find the highest ticket ID to set the currentTicketId
-        if (tickets.length > 0) {
-            const highestId = Math.max(...tickets.map(ticket => ticket.id));
-            currentTicketId = highestId + 1;
-        }
-    }
-}
-
-// Save tickets to localStorage
-function saveTicketsToStorage() {
-    localStorage.setItem('tickets', JSON.stringify(tickets));
-}
 
 // Setup the ticket form
 function setupTicketForm() {
@@ -450,11 +430,9 @@ function setupTicketForm() {
             dateCreated: new Date().toISOString()
         };
         
-        // Add ticket to array
-        tickets.push(newTicket);
+         // Add ticket to memory storage (array)
+         tickets.push(newTicket);
         
-        // Save to localStorage
-        saveTicketsToStorage();
         
         // Reset form
         ticketForm.reset();
@@ -531,7 +509,6 @@ function displayTickets() {
 }
 
 // Add event listeners to ticket action buttons
-// Updated addActionButtonListeners function with download and delete functionality
 function addActionButtonListeners() {
     // View button
     document.querySelectorAll('.view-btn').forEach(btn => {
