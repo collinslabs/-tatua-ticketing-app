@@ -1,4 +1,3 @@
-
 // popup system
 const popup = {
     overlay: null,
@@ -10,7 +9,7 @@ const popup = {
     closeBtn: null,
     actionButtons: null,
 
-    // Initializing the popup system
+  
     init: function() {
         this.overlay = document.getElementById('popupOverlay');
         this.container = this.overlay.querySelector('.popup-container');
@@ -21,10 +20,10 @@ const popup = {
         this.closeBtn = document.getElementById('popupClose');
         this.actionButtons = document.getElementById('popupActions');
 
-        // Close popup when clicking the close button
+      
         this.closeBtn.addEventListener('click', () => this.close());
         
-        // Close popup when clicking outside
+        
         this.overlay.addEventListener('click', (e) => {
             if (e.target === this.overlay) {
                 this.close();
@@ -32,7 +31,7 @@ const popup = {
         });
     },
 
-    // Show alert popup
+   
     alert: function(options) {
         const defaults = {
             title: 'Notification',
@@ -46,7 +45,7 @@ const popup = {
 
         this.title.textContent = settings.title;
         
-        // Create content with icon and message
+        
         this.content.innerHTML = `
             <div class="popup-icon ${settings.icon}">
                 <i class="fas fa-${this.getIconClass(settings.icon)}"></i>
@@ -54,7 +53,7 @@ const popup = {
             <div class="popup-message">${settings.message}</div>
         `;
 
-        // Show only the confirm button
+       
         this.actionButtons.innerHTML = `
             <button class="popup-btn popup-btn-primary" id="popupConfirm">${settings.buttonText}</button>
         `;
@@ -68,7 +67,7 @@ const popup = {
         this.open();
     },
 
-    // Show confirmation popup
+   
     confirm: function(options) {
         const defaults = {
             title: 'Confirmation',
@@ -84,7 +83,7 @@ const popup = {
 
         this.title.textContent = settings.title;
         
-        // Create content with icon and message
+        
         this.content.innerHTML = `
             <div class="popup-icon ${settings.icon}">
                 <i class="fas fa-${this.getIconClass(settings.icon)}"></i>
@@ -92,7 +91,7 @@ const popup = {
             <div class="popup-message">${settings.message}</div>
         `;
 
-        // Show confirm and cancel buttons
+      
         this.actionButtons.innerHTML = `
             <button class="popup-btn popup-btn-secondary" id="popupCancel">${settings.cancelText}</button>
             <button class="popup-btn popup-btn-primary" id="popupConfirm">${settings.confirmText}</button>
@@ -114,7 +113,7 @@ const popup = {
         this.open();
     },
 
-    // Show prompt popup
+    
     prompt: function(options) {
         const defaults = {
             title: 'Enter Information',
@@ -141,7 +140,7 @@ const popup = {
             </div>
         `;
 
-        // Show submit and cancel buttons
+       
         this.actionButtons.innerHTML = `
             <button class="popup-btn popup-btn-secondary" id="popupCancel">${settings.cancelText}</button>
             <button class="popup-btn popup-btn-primary" id="popupConfirm">${settings.confirmText}</button>
@@ -151,7 +150,7 @@ const popup = {
         this.cancelBtn = document.getElementById('popupCancel');
         const promptInput = document.getElementById('promptInput');
         
-        // Focus the input field
+      
         setTimeout(() => promptInput.focus(), 100);
         
         this.confirmBtn.addEventListener('click', () => {
@@ -165,7 +164,7 @@ const popup = {
             if (settings.onCancel) settings.onCancel();
         });
 
-        // Submit on Enter key
+     
         promptInput.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
                 this.confirmBtn.click();
@@ -175,7 +174,6 @@ const popup = {
         this.open();
     },
 
-    // Show custom content in popup
     custom: function(options) {
         const defaults = {
             title: 'Custom Content',
@@ -189,14 +187,14 @@ const popup = {
         this.title.textContent = settings.title;
         this.content.innerHTML = settings.content;
 
-        // Set custom width if provided
+     
         if (settings.width) {
             this.container.style.maxWidth = settings.width;
         } else {
             this.container.style.maxWidth = '400px';
         }
 
-        // Create custom buttons
+       
         let buttonsHtml = '';
         settings.buttons.forEach(button => {
             const buttonClass = button.primary ? 'popup-btn-primary' : 'popup-btn-secondary';
@@ -205,7 +203,7 @@ const popup = {
         
         this.actionButtons.innerHTML = buttonsHtml;
 
-        // Add event listeners to buttons
+      
         settings.buttons.forEach(button => {
             const buttonElement = document.getElementById(button.id);
             buttonElement.addEventListener('click', () => {
@@ -314,7 +312,7 @@ const popup = {
                         const message = document.getElementById('replyMessage').value;
                         
                         if (!message.trim()) {
-                            // Show error if message is empty
+                         
                             this.alert({
                                 title: 'Error',
                                 message: 'Please enter a reply message.',
@@ -323,7 +321,7 @@ const popup = {
                             return;
                         }
                         
-                        // Show success message
+                  
                         this.alert({
                             title: 'Success',
                             message: `Reply sent to ${ticket.fullName} via ${method === 'email' ? 'email' : 'phone call'}.`,
@@ -335,19 +333,19 @@ const popup = {
         });
     },
 
-    // Open the popup
+
     open: function() {
         this.overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        document.body.style.overflow = 'hidden'; 
     },
 
-    // Close the popup
+  
     close: function() {
         this.overlay.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.overflow = '';
     },
 
-    // Get icon class based on type
+  
     getIconClass: function(type) {
         switch(type) {
             case 'success': return 'check-circle';
@@ -363,17 +361,196 @@ const popup = {
 document.addEventListener('DOMContentLoaded', function() {
     popup.init();
     
+ 
+    let activeFilters = false;
+    let activeSorts = false;
+
+    
+    const tableBody = document.getElementById('ticketTableBody');
+    populateTicketTable(tickets);
+    updateControlButtons();
+
+    // Event listeners for sort, filter and refresh buttons
+    document.getElementById('sortButton').addEventListener('click', function() {
+        if (activeSorts) {
+           
+            clearSorts();
+        } else {
+           
+            document.getElementById('sortPopupOverlay').style.display = 'flex';
+        }
+    });
+    
+    document.getElementById('filterButton').addEventListener('click', function() {
+        if (activeFilters) {
+            
+            clearFilters();
+        } else {
+           
+            document.getElementById('filterPopupOverlay').style.display = 'flex';
+        }
+    });
+    
+    document.getElementById('refreshButton').addEventListener('click', function() {
+      
+        populateTicketTable(tickets);
+    });
+
+    // Close buttons for popups
+    document.getElementById('sortPopupClose').addEventListener('click', function() {
+        document.getElementById('sortPopupOverlay').style.display = 'none';
+    });
+    
+    document.getElementById('filterPopupClose').addEventListener('click', function() {
+        document.getElementById('filterPopupOverlay').style.display = 'none';
+    });
+
+    // Submit buttons for sort and filter
+    document.getElementById('submitSortBtn').addEventListener('click', function() {
+        applySorting();
+        document.getElementById('sortPopupOverlay').style.display = 'none';
+    });
+
+    document.getElementById('submitFilterBtn').addEventListener('click', function() {
+        applyFilters();
+        document.getElementById('filterPopupOverlay').style.display = 'none';
+    });
+
+    
+    function applySorting() {
+        activeSorts = true;
+        updateControlButtons();
+    }
+
+    
+    function applyFilters() {
+        activeFilters = true;
+        updateControlButtons();
+    }
+
+   
+    function clearSorts() {
+        activeSorts = false;
+        updateControlButtons();
+        
+        populateTicketTable(tickets);
+    }
+
+    
+    function clearFilters() {
+        activeFilters = false;
+        updateControlButtons();
+        
+        populateTicketTable(tickets);
+    }
+
+    
+    function updateControlButtons() {
+        
+        const sortButton = document.getElementById('sortButton');
+        if (activeSorts) {
+            sortButton.innerHTML = `<span class="active-filter-indicator">1 Sort <i class="fas fa-times"></i></span>`;
+            sortButton.classList.add('active-control');
+        } else {
+            sortButton.innerHTML = `<i class="fas fa-sort-amount-down"></i> Sort`;
+            sortButton.classList.remove('active-control');
+        }
+
+        // Update filter button
+        const filterButton = document.getElementById('filterButton');
+        if (activeFilters) {
+            filterButton.innerHTML = `<span class="active-filter-indicator">1 Filter <i class="fas fa-times"></i></span>`;
+            filterButton.classList.add('active-control');
+        } else {
+            filterButton.innerHTML = `<i class="fas fa-filter"></i> Filter`;
+            filterButton.classList.remove('active-control');
+        }
+    }
+
+    // Populate table function
+    function populateTicketTable(ticketData) {
+        tableBody.innerHTML = '';
+        
+        ticketData.forEach(ticket => {
+            const row = document.createElement('tr');
+            
+         
+            const idCell = document.createElement('td');
+            idCell.textContent = ticket.ticket_id;
+            row.appendChild(idCell);
+            
+       
+            const raisedByCell = document.createElement('td');
+            raisedByCell.innerHTML = `${ticket.raised_by}<br><span style="color: #666; font-size: 0.9em;">${ticket.email}</span>`;
+            row.appendChild(raisedByCell);
+            
+       
+            const detailsCell = document.createElement('td');
+            detailsCell.innerHTML = ticket.ticket_details.replace(/\n/g, '<br>');
+            row.appendChild(detailsCell);
+            
+          
+            const dateCell = document.createElement('td');
+            dateCell.textContent = ticket.date_created;
+            row.appendChild(dateCell);
+            
+         
+            const actionsCell = document.createElement('td');
+            actionsCell.className = 'actions-cell';
+            
+         
+            const infoBtn = document.createElement('span');
+            infoBtn.innerHTML = '<i class="fas fa-info-circle"></i>';
+            infoBtn.className = 'action-icon';
+            actionsCell.appendChild(infoBtn);
+            
+          
+            const downloadBtn = document.createElement('span');
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
+            downloadBtn.className = 'action-icon';
+            actionsCell.appendChild(downloadBtn);
+            
+        
+            const callBtn = document.createElement('span');
+            callBtn.innerHTML = '<i class="fas fa-phone"></i>';
+            callBtn.className = 'action-icon';
+            actionsCell.appendChild(callBtn);
+            
+         
+            const emailBtn = document.createElement('span');
+            emailBtn.innerHTML = '<i class="fas fa-envelope"></i>';
+            emailBtn.className = 'action-icon';
+            actionsCell.appendChild(emailBtn);
+            
+       
+            const copyBtn = document.createElement('span');
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+            copyBtn.className = 'action-icon';
+            actionsCell.appendChild(copyBtn);
+            
+          
+            const deleteBtn = document.createElement('span');
+            deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            deleteBtn.className = 'action-icon';
+            actionsCell.appendChild(deleteBtn);
+            
+            row.appendChild(actionsCell);
+            tableBody.appendChild(row);
+        });
+    }
 });
 
 // Global variables
 let tickets = [];
 let currentTicketId = 1;
+let cryptoKey;
+
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-    loadTicketsFromStorage();
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadTicketsFromStorage();
     
-    // Check which page we're on
+ 
     const isTicketForm = document.getElementById('ticketForm');
     const isTicketList = document.getElementById('ticketTableBody');
     
@@ -388,22 +565,46 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Load tickets from localStorage
-function loadTicketsFromStorage() {
-    const storedTickets = localStorage.getItem('tickets');
-    if (storedTickets) {
-        tickets = JSON.parse(storedTickets);
-        // Find the highest ticket ID to set the currentTicketId
-        if (tickets.length > 0) {
-            const highestId = Math.max(...tickets.map(ticket => ticket.id));
-            currentTicketId = highestId + 1;
+async function loadTicketsFromStorage() {
+    try {
+        if (!cryptoKey) {
+            cryptoKey = await generateKey();
         }
+
+        const storedTickets = localStorage.getItem('tickets');
+        if (storedTickets) {
+            const combined = Uint8Array.from(atob(storedTickets), c => c.charCodeAt(0));
+            const decryptedData = await decryptData(cryptoKey, combined);
+            tickets = JSON.parse(decryptedData);
+
+         
+            if (tickets.length > 0) {
+                const highestId = Math.max(...tickets.map(ticket => ticket.id));
+                currentTicketId = highestId + 1;
+            }
+        }
+    } catch (error) {
+        console.error('Failed to load tickets from storage:', error);
+     
+        localStorage.removeItem('tickets');
+        tickets = [];
+    }
+}
+// Save tickets to localStorage
+async function saveTicketsToStorage() {
+    try {
+        if (!cryptoKey) {
+            cryptoKey = await generateKey();
+        }
+
+        const combined = await encryptData(cryptoKey, tickets);
+        const base64Data = btoa(String.fromCharCode.apply(null, combined));
+        localStorage.setItem('tickets', base64Data);
+    } catch (error) {
+        console.error('Failed to save tickets to storage:', error);
     }
 }
 
-// Save tickets to localStorage
-function saveTicketsToStorage() {
-    localStorage.setItem('tickets', JSON.stringify(tickets));
-}
 
 // Setup the ticket form
 function setupTicketForm() {
@@ -412,7 +613,7 @@ function setupTicketForm() {
     const fileNameDisplay = document.querySelector('.file-name');
     const fileSelectButton = document.querySelector('.file-select-button');
     
-    // Handle file selection
+   
     fileInput.addEventListener('change', function(e) {
         const fileName = e.target.files.length > 0 ? e.target.files[0].name : 'No file chosen';
         fileNameDisplay.textContent = fileName;
@@ -423,10 +624,10 @@ function setupTicketForm() {
     });
     
     // Handle form submission
-    ticketForm.addEventListener('submit', function(e) {
+    ticketForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // Get form values
+    
         const fullName = document.getElementById('fullName').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -434,7 +635,7 @@ function setupTicketForm() {
         const message = document.getElementById('message').value;
         const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
         
-        // Create new ticket
+      
         const newTicket = {
             id: currentTicketId++,
             fullName: fullName,
@@ -447,17 +648,17 @@ function setupTicketForm() {
             dateCreated: new Date().toISOString()
         };
         
-        // Add ticket to array
+      
         tickets.push(newTicket);
         
-        // Save to localStorage
-        saveTicketsToStorage();
+   
+        await saveTicketsToStorage();
         
-        // Reset form
+   
         ticketForm.reset();
         fileNameDisplay.textContent = 'No file chosen';
         
-        // Show success message with custom popup
+       
         popup.alert({
             title: 'Success',
             message: 'Your ticket has been submitted successfully!',
@@ -471,8 +672,8 @@ function setupTicketForm() {
 }
 
 
+
 // Display tickets in the table
-// Updated displayTickets function with download and delete icons
 function displayTickets() {
     const tableBody = document.getElementById('ticketTableBody');
     tableBody.innerHTML = '';
@@ -496,8 +697,11 @@ function displayTickets() {
             </td>
             <td>${formattedDate}</td>
             <td class="action-buttons">
-                <button class="action-button view-btn" data-id="${ticket.id}" title="View Ticket">
+                <button class="action-button menu-btn" data-id="${ticket.id}" title="View Ticket">
                     <i class="fas fa-eye"></i>
+                </button>
+                <button class="action-button download-btn" data-id="${ticket.id}" title="Download Attachment" ${!ticket.hasAttachment ? 'disabled' : ''}>
+                    <i class="fas fa-download"></i>
                 </button>
                 <button class="action-button call-btn" data-id="${ticket.id}" title="Call">
                     <i class="fas fa-phone"></i>
@@ -508,27 +712,23 @@ function displayTickets() {
                 <button class="action-button chat-btn" data-id="${ticket.id}" title="Chat">
                     <i class="fas fa-comment"></i>
                 </button>
-                <button class="action-button download-btn" data-id="${ticket.id}" title="Download Attachment" ${!ticket.hasAttachment ? 'disabled' : ''}>
-                    <i class="fas fa-download"></i>
-                </button>
+                
                 <button class="action-button delete-btn" data-id="${ticket.id}" title="Delete Ticket">
                     <i class="fas fa-trash"></i>
                 </button>
-                <button class="action-button menu-btn" data-id="${ticket.id}" title="More Options">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
+            
             </td>
         `;
         
         tableBody.appendChild(row);
     });
     
-    // Add event listeners to action buttons
+    
     addActionButtonListeners();
 }
 
 // Add event listeners to ticket action buttons
-// Updated addActionButtonListeners function with download and delete functionality
+
 function addActionButtonListeners() {
     // View button
     document.querySelectorAll('.view-btn').forEach(btn => {
@@ -625,7 +825,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // NEW: Download attachment button
+    //Download attachment button
     document.querySelectorAll('.download-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -643,7 +843,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // NEW: Delete ticket button
+    //  Delete ticket button
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -663,7 +863,7 @@ function addActionButtonListeners() {
 
 // Show context menu
 function setupContextMenuItems(ticketId) {
-    // Download attachment
+   
     document.getElementById('downloadAttachment').addEventListener('click', function() {
         popup.alert({
             title: 'Download',
@@ -736,9 +936,9 @@ function setupContextMenuItems(ticketId) {
         closeContextMenu();
     });
 }
-// New function to download ticket attachment
+
 function downloadAttachment(ticket) {
-    // This is a simulated download function since we don't have real attachments
+    
     popup.custom({
         title: 'Downloading Attachment',
         content: `
@@ -764,7 +964,7 @@ function downloadAttachment(ticket) {
         ]
     });
     
-    // Simulate download progress
+   
     let progress = 0;
     const progressBar = document.getElementById('downloadProgress');
     const progressText = document.getElementById('progressText');
@@ -786,13 +986,12 @@ function downloadAttachment(ticket) {
         }
     }, 150);
     
-    // Add cancel download functionality
+ 
     document.getElementById('cancelDownload').addEventListener('click', () => {
         clearInterval(downloadInterval);
     });
 }
 
-// New function to delete ticket with confirmation
 function deleteTicketWithConfirmation(ticketId) {
     const ticket = tickets.find(t => t.id == ticketId);
     
@@ -805,16 +1004,16 @@ function deleteTicketWithConfirmation(ticketId) {
         confirmText: 'Delete',
         cancelText: 'Cancel',
         onConfirm: function() {
-            // Remove the ticket from the array
+          
             tickets = tickets.filter(t => t.id != ticketId);
             
-            // Save to localStorage
+            
             saveTicketsToStorage();
             
-            // Refresh the display
+           
             displayTickets();
             
-            // Show success message
+          
             popup.alert({
                 title: 'Success',
                 message: `Ticket #${ticketId} has been deleted successfully.`,
@@ -825,7 +1024,7 @@ function deleteTicketWithConfirmation(ticketId) {
 }
 // Setup ticket list controls
 function setupTicketListControls() {
-    // Refresh button
+  
     document.getElementById('refreshButton').addEventListener('click', function() {
         loadTicketsFromStorage();
         displayTickets();
@@ -840,7 +1039,7 @@ function setupTicketListControls() {
 
 // Filter Popup Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+  
     const filterButton = document.getElementById('filterButton');
     const filterPopupOverlay = document.getElementById('filterPopupOverlay');
     const filterPopupClose = document.getElementById('filterPopupClose');
@@ -849,40 +1048,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitFilterBtn = document.getElementById('submitFilterBtn');
     const filterRows = document.getElementById('filterRows');
     
-    // Show filter popup
+    
     filterButton.addEventListener('click', function() {
         filterPopupOverlay.style.display = 'flex';
     });
     
-    // Close filter popup
+  
     filterPopupClose.addEventListener('click', function() {
         filterPopupOverlay.style.display = 'none';
     });
     
-    // Add new filter row
+   
     addFilterBtn.addEventListener('click', function() {
         addFilterRow();
     });
     
-    // Handle reset filter button
+    
     resetFilterBtn.addEventListener('click', function() {
         resetFilters();
     });
     
-    // Handle submit filter button
     submitFilterBtn.addEventListener('click', function() {
         applyFilters();
         filterPopupOverlay.style.display = 'none';
     });
     
-    // Close popup when clicking outside
+   
     filterPopupOverlay.addEventListener('click', function(event) {
         if (event.target === filterPopupOverlay) {
             filterPopupOverlay.style.display = 'none';
         }
     });
     
-    // Set up filter row removal event delegation
+  
     filterRows.addEventListener('click', function(event) {
         if (event.target.classList.contains('fa-trash-alt') || 
             event.target.classList.contains('remove-filter-btn')) {
@@ -893,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Helper function to find closest parent with selector
+   
     function getClosestParent(element, selector) {
         while (element && !element.matches(selector)) {
             element = element.parentElement;
@@ -901,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return element;
     }
     
-    // Function to add a new filter row
+  
     function addFilterRow() {
         const newRow = document.createElement('div');
         newRow.className = 'filter-row';
@@ -980,17 +1178,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-        
-        // Filter the table rows based on the collected filters
+       
         filterTableRows(filters);
     }
     
-    // Function to filter table rows based on applied filters
+  
     function filterTableRows(filters) {
         const tableRows = document.querySelectorAll('#ticketTableBody tr');
         
         if (filters.length === 0) {
-            // Show all rows if no filters are applied
+          
             tableRows.forEach(row => {
                 row.style.display = '';
             });
@@ -1034,12 +1231,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Helper function to get cell index by column name
+
     function getCellIndexByColumnName(columnName) {
         const columnMapping = {
             'ticket_id': 0,
             'raised_by': 1,
-            'email_address': 1, // Assuming email is also in the raised_by column
+            'email_address': 1, 
             'ticket_details': 2,
             'date_created': 3
         };
@@ -1047,12 +1244,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return columnMapping[columnName] !== undefined ? columnMapping[columnName] : -1;
     }
     
-    // Initialize the filter popup
+  
     initFilterPopup();
     
-    // Initialize the filter popup with one row
+    
     function initFilterPopup() {
-        // Make sure there's at least one filter row
+       
         if (filterRows.children.length === 0) {
             addFilterRow();
         }
@@ -1061,7 +1258,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Sort functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+   
     const sortButton = document.getElementById('sortButton');
     const sortPopupOverlay = document.getElementById('sortPopupOverlay');
     const sortPopupClose = document.getElementById('sortPopupClose');
@@ -1070,43 +1267,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitSortBtn = document.getElementById('submitSortBtn');
     const sortRows = document.getElementById('sortRows');
     
-    // Open sort popup
+   
     sortButton.addEventListener('click', function() {
         sortPopupOverlay.style.display = 'flex';
     });
     
-    // Close sort popup
     sortPopupClose.addEventListener('click', function() {
         sortPopupOverlay.style.display = 'none';
     });
     
-    // Close sort popup when clicking outside
+    
     sortPopupOverlay.addEventListener('click', function(event) {
         if (event.target === sortPopupOverlay) {
             sortPopupOverlay.style.display = 'none';
         }
     });
     
-    // Add new sort row
+   
     addSortBtn.addEventListener('click', function() {
         addSortRow();
     });
     
-    // Reset sorting
+   
     resetSortingBtn.addEventListener('click', function() {
         resetSorting();
     });
     
-    // Submit sorting
+   
     submitSortBtn.addEventListener('click', function() {
         applySorting();
         sortPopupOverlay.style.display = 'none';
     });
     
-    // Initialize event listeners for the first sort row
     initSortRowEvents(sortRows.querySelector('.sort-row'));
     
-    // Function to add a new sort row
+    
     function addSortRow() {
         const newRow = document.createElement('div');
         newRow.className = 'sort-row';
@@ -1145,7 +1340,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const removeBtn = row.querySelector('.remove-sort-btn');
         
         removeBtn.addEventListener('click', function() {
-            // Don't remove if it's the only row
+        
             if (sortRows.querySelectorAll('.sort-row').length > 1) {
                 row.remove();
             }
@@ -1154,22 +1349,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Reset all sorting
     function resetSorting() {
-        // Clear all rows except the first one
+        
         const allRows = sortRows.querySelectorAll('.sort-row');
         for (let i = 1; i < allRows.length; i++) {
             allRows[i].remove();
         }
         
-        // Reset the first row's selects
+      
         const firstRow = sortRows.querySelector('.sort-row');
         firstRow.querySelector('.column-select').value = '';
         firstRow.querySelector('.order-select').value = '';
         
-        // Apply the reset to the table
-        // This part depends on your table implementation
-        // Example: resetTableSorting();
         
-        // For demonstration, we'll just reload the tickets
         loadTickets();
     }
     
@@ -1194,16 +1385,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to sort tickets based on criteria
     function sortTickets(criteria) {
-        // Get the current tickets array
-        // This depends on how you're storing your tickets
-        // For demonstration, let's assume tickets are stored in a global variable
+     
         if (typeof tickets !== 'undefined' && Array.isArray(tickets)) {
             tickets.sort((a, b) => {
-                // Iterate through each sort criteria
+                
                 for (const criterion of criteria) {
                     const { column, order } = criterion;
                     
-                    // Convert values based on column type
+                   
                     let valueA, valueB;
                     
                     if (column === 'date_created') {
@@ -1263,16 +1452,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tableBody.appendChild(row);
         });
         
-        // Reinitialize any event listeners for the table rows
+        
         initTableRowEvents();
     }
     
-    // This function would need to be implemented based on your data source
+   
     function loadTickets() {
-        // Implementation depends on how you're loading tickets
-        // Example: fetchTicketsFromAPI().then(data => renderTickets(data));
-        
-        // For demonstration, let's assume you have a function to load tickets
+       
         if (typeof fetchTickets === 'function') {
             fetchTickets();
         }
@@ -1280,7 +1466,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize table row events
     function initTableRowEvents() {
-        // Implementation depends on your table interactions
-        // Example: adding click listeners to the action buttons
+        
+       
     }
 });
