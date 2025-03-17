@@ -57,15 +57,11 @@
                 <div class="form-group">
                     <label>Preferred Contact:</label>
                     <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="preferredContact" value="Email" checked>
-                            <span class="radio-custom"></span>
-                            Email
+                        <label>
+                            <input type="radio" name="preferredContact" value="Email" checked> Email
                         </label>
-                        <label class="radio-label">
-                            <input type="radio" name="preferredContact" value="Phone">
-                            <span class="radio-custom"></span>
-                            Phone
+                        <label>
+                            <input type="radio" name="preferredContact" value="Phone"> Phone
                         </label>
                     </div>
                 </div>
@@ -74,15 +70,16 @@
                     <label for="attachment">Attachment:</label>
                     <div class="file-input-container">
                         <input type="file" id="attachment" name="attachment">
-                        <button type="button" class="file-select-button">Choose File</button>
+                        <label for="attachment" class="file-input-label">Choose File</label>
                         <span class="file-name">No file chosen</span>
                     </div>
                 </div>
                 
-                <div class="form-group checkbox-group">
+                <div class="form-group terms-container">
                     <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to the Terms and Conditions</label>
+                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
                 </div>
+                
                 
                 <div class="form-group">
                     <button type="submit" class="submit-btn">Submit</button>
