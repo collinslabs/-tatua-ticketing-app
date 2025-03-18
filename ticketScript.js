@@ -451,19 +451,27 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSorts) {
             sortButton.innerHTML = `<span class="active-filter-indicator">1 Sort <i class="fas fa-times"></i></span>`;
             sortButton.classList.add('active-control');
+            sortButton.style.backgroundColor = 'brown'; 
+            sortButton.style.color = 'white'; 
         } else {
             sortButton.innerHTML = `<i class="fas fa-sort-amount-down"></i> Sort`;
             sortButton.classList.remove('active-control');
+            sortButton.style.backgroundColor = '';  
+            sortButton.style.color = '';  
         }
-
-        // Update filter button
+    
+       
         const filterButton = document.getElementById('filterButton');
         if (activeFilters) {
             filterButton.innerHTML = `<span class="active-filter-indicator">1 Filter <i class="fas fa-times"></i></span>`;
             filterButton.classList.add('active-control');
+            filterButton.style.backgroundColor = 'brown';  
+            filterButton.style.color = 'white'; 
         } else {
             filterButton.innerHTML = `<i class="fas fa-filter"></i> Filter`;
             filterButton.classList.remove('active-control');
+            filterButton.style.backgroundColor = '';  
+            filterButton.style.color = '';  
         }
     }
 
@@ -698,7 +706,10 @@ function displayTickets() {
             <td>${formattedDate}</td>
             <td class="action-buttons">
                 <button class="action-button menu-btn" data-id="${ticket.id}" title="View Ticket">
-                    <i class="fas fa-eye"></i>
+                    <i class="fas fa-circle-exclamation"></i>
+                </button>
+                <button class="action-button edit-btn" data-id="${ticket.id}" title="Edit Ticket">
+                    <i class="fas fa-edit"></i>
                 </button>
                 <button class="action-button download-btn" data-id="${ticket.id}" title="Download Attachment" ${!ticket.hasAttachment ? 'disabled' : ''}>
                     <i class="fas fa-download"></i>
@@ -709,20 +720,21 @@ function displayTickets() {
                 <button class="action-button email-btn" data-id="${ticket.id}" title="Email">
                     <i class="fas fa-envelope"></i>
                 </button>
-                <button class="action-button chat-btn" data-id="${ticket.id}" title="Chat">
-                    <i class="fas fa-comment"></i>
-                </button>
-                
                 <button class="action-button delete-btn" data-id="${ticket.id}" title="Delete Ticket">
                     <i class="fas fa-trash"></i>
                 </button>
-            
             </td>
         `;
         
         tableBody.appendChild(row);
     });
     
+    
+    
+    if (!document.querySelector('style#action-button-styles')) {
+        style.id = 'action-button-styles';
+        document.head.appendChild(style);
+    }
     
     addActionButtonListeners();
 }
@@ -1142,7 +1154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to reset filters
     function resetFilters() {
-        // Clear all filter rows except the first one
+     
         while (filterRows.children.length > 1) {
             filterRows.removeChild(filterRows.lastChild);
         }
@@ -1256,7 +1268,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Sort functionality
+
 document.addEventListener('DOMContentLoaded', function() {
    
     const sortButton = document.getElementById('sortButton');
