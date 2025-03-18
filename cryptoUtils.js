@@ -68,7 +68,6 @@ async function decryptData(key, combined) {
 
         return new TextDecoder().decode(decryptedData);
     } catch (error) {
-        console.error('Failed to decrypt data:', error);
         throw error;
     }
 }

@@ -361,6 +361,7 @@ const popup = {
 document.addEventListener('DOMContentLoaded', function() {
     popup.init();
     
+    
  
     let activeFilters = false;
     let activeSorts = false;
@@ -681,7 +682,6 @@ function setupTicketForm() {
 
 
 
-// Display tickets in the table
 function displayTickets() {
     const tableBody = document.getElementById('ticketTableBody');
     tableBody.innerHTML = '';
@@ -705,31 +705,29 @@ function displayTickets() {
             </td>
             <td>${formattedDate}</td>
             <td class="action-buttons">
-                <button class="action-button menu-btn" data-id="${ticket.id}" title="View Ticket">
-                    <i class="fas fa-circle-exclamation"></i>
+                <button class="action-button view-btn" data-id="${ticket.id}" title="View Ticket">
+                    <img src="images/info.png" alt="View Ticket" width="10" height="10">
                 </button>
                 <button class="action-button edit-btn" data-id="${ticket.id}" title="Edit Ticket">
-                    <i class="fas fa-edit"></i>
+                    <img src="images/edit.png" alt="Edit Ticket" width="10" height="10">
                 </button>
                 <button class="action-button download-btn" data-id="${ticket.id}" title="Download Attachment" ${!ticket.hasAttachment ? 'disabled' : ''}>
-                    <i class="fas fa-download"></i>
+                    <img src="images/download.png" alt="Download Attachment" width="10" height="10">
                 </button>
                 <button class="action-button call-btn" data-id="${ticket.id}" title="Call">
-                    <i class="fas fa-phone"></i>
+                    <img src="images/call.png" alt="Call" width="10" height="10">
                 </button>
                 <button class="action-button email-btn" data-id="${ticket.id}" title="Email">
-                    <i class="fas fa-envelope"></i>
+                    <img src="images/mail.png" alt="Email" width="10" height="10">
                 </button>
                 <button class="action-button delete-btn" data-id="${ticket.id}" title="Delete Ticket">
-                    <i class="fas fa-trash"></i>
+                    <img src="images/delete.png" alt="Delete Ticket" width="10" height="10">
                 </button>
             </td>
         `;
         
         tableBody.appendChild(row);
     });
-    
-    
     
     if (!document.querySelector('style#action-button-styles')) {
         style.id = 'action-button-styles';
@@ -742,7 +740,7 @@ function displayTickets() {
 // Add event listeners to ticket action buttons
 
 function addActionButtonListeners() {
-    // View button
+
     document.querySelectorAll('.view-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -754,6 +752,20 @@ function addActionButtonListeners() {
     });
     
     // Call button
+    document.querySelectorAll('.call-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const ticketId = this.getAttribute('data-id');
+           const ticket = tickets.find(t => t.id == ticketId);
+            
+            popup.alert({
+                title: 'Calling',
+                message: `Initiating call to ${ticket.fullName} at ${ticket.phone}`,
+                icon: 'info',
+                buttonText: 'OK'
+            });
+        });
+    });
+
     document.querySelectorAll('.call-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');
@@ -822,22 +834,7 @@ function addActionButtonListeners() {
             });
         });
     });
-    
-    // Chat button
-    document.querySelectorAll('.chat-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const ticketId = this.getAttribute('data-id');
-            const ticket = tickets.find(t => t.id == ticketId);
-            
-            popup.alert({
-                title: 'Chat',
-                message: `Chat feature with ${ticket.fullName} is not available in this demo.`,
-                icon: 'info'
-            });
-        });
-    });
-    
-    //Download attachment button
+    //Download
     document.querySelectorAll('.download-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const ticketId = this.getAttribute('data-id');

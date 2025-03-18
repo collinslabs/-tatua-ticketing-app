@@ -12,7 +12,7 @@ body {
 }
 
 header {
-    background-color: #2d2d3e;
+    background-color: #2F243A;
     color: white;
     padding: 10px 20px;
     display: flex;
@@ -28,7 +28,7 @@ header {
 
 .logo-square {
     background-color: #ffa500;
-    color: #2d2d3e;
+    color: #2F243A;
     width: 28px;
     height: 28px;
     display: flex;
@@ -136,12 +136,12 @@ select {
 
 input[type="radio"] {
     margin-right: 5px;
-    accent-color: #624f82;
+    accent-color: #2F243A;
 }
 
 input[type="checkbox"] {
     margin-right: 5px;
-    accent-color: #624f82;
+    accent-color: #2F243A;
 }
 
 .terms-container {
@@ -161,12 +161,12 @@ input[type="checkbox"] {
 }
 
 .terms-container a {
-    color: #624f82;
+    color: #2F243A;
     text-decoration: none;
 }
 
 .submit-btn {
-    background-color: #624f82;
+    background-color: #2F243A;
     color: white;
     border: none;
     border-radius: 20px;
@@ -178,7 +178,7 @@ input[type="checkbox"] {
 }
 
 .submit-btn:hover {
-    background-color: #53416e;
+    background-color: #2F243A;
 }
 
 /* File Input Styles */
@@ -256,7 +256,7 @@ input[type="file"] {
 }
 
 .ticket-table th {
-    background-color: #7c2c2c;
+    background-color: #2F243A;
     color: white;
     text-align: left;
     padding: 12px 15px;
@@ -282,7 +282,7 @@ input[type="file"] {
 .filter-tag, .sort-tag {
     display: flex;
     align-items: center;
-    background-color: #7c2c2c;
+    background-color: #2F243A;
     color: white;
     padding: 5px 10px;
     border-radius: 4px;
@@ -325,7 +325,7 @@ input[type="file"] {
 }
 
 .action-icon:hover {
-    color: #7c2c2c;
+    color: #2F243A;
 }
 
 .context-menu {
