@@ -1,4 +1,4 @@
-// popup system
+// Popup system
 const popup = {
     overlay: null,
     container: null,
@@ -9,7 +9,6 @@ const popup = {
     closeBtn: null,
     actionButtons: null,
 
-  
     init: function() {
         this.overlay = document.getElementById('popupOverlay');
         this.container = this.overlay.querySelector('.popup-container');
@@ -20,23 +19,20 @@ const popup = {
         this.closeBtn = document.getElementById('popupClose');
         this.actionButtons = document.getElementById('popupActions');
 
-      
-        this.closeBtn.addEventListener('click', () => this.close());
-        
-        
-        this.overlay.addEventListener('click', (e) => {
+        this.closeBtn.onclick = () => this.close();
+
+        this.overlay.onclick = (e) => {
             if (e.target === this.overlay) {
                 this.close();
             }
-        });
+        };
     },
 
-   
     alert: function(options) {
         const defaults = {
             title: 'Notification',
             message: '',
-            icon: 'info', 
+            icon: 'info',
             buttonText: 'OK',
             callback: null
         };
@@ -44,8 +40,6 @@ const popup = {
         const settings = { ...defaults, ...options };
 
         this.title.textContent = settings.title;
-        
-        
         this.content.innerHTML = `
             <div class="popup-icon ${settings.icon}">
                 <i class="fas fa-${this.getIconClass(settings.icon)}"></i>
@@ -53,21 +47,19 @@ const popup = {
             <div class="popup-message">${settings.message}</div>
         `;
 
-       
         this.actionButtons.innerHTML = `
             <button class="popup-btn popup-btn-primary" id="popupConfirm">${settings.buttonText}</button>
         `;
 
         this.confirmBtn = document.getElementById('popupConfirm');
-        this.confirmBtn.addEventListener('click', () => {
+        this.confirmBtn.onclick = () => {
             this.close();
             if (settings.callback) settings.callback();
-        });
+        };
 
         this.open();
     },
 
-   
     confirm: function(options) {
         const defaults = {
             title: 'Confirmation',
@@ -82,8 +74,6 @@ const popup = {
         const settings = { ...defaults, ...options };
 
         this.title.textContent = settings.title;
-        
-        
         this.content.innerHTML = `
             <div class="popup-icon ${settings.icon}">
                 <i class="fas fa-${this.getIconClass(settings.icon)}"></i>
@@ -91,7 +81,6 @@ const popup = {
             <div class="popup-message">${settings.message}</div>
         `;
 
-      
         this.actionButtons.innerHTML = `
             <button class="popup-btn popup-btn-secondary" id="popupCancel">${settings.cancelText}</button>
             <button class="popup-btn popup-btn-primary" id="popupConfirm">${settings.confirmText}</button>
@@ -99,21 +88,20 @@ const popup = {
 
         this.confirmBtn = document.getElementById('popupConfirm');
         this.cancelBtn = document.getElementById('popupCancel');
-        
-        this.confirmBtn.addEventListener('click', () => {
+
+        this.confirmBtn.onclick = () => {
             this.close();
             if (settings.onConfirm) settings.onConfirm();
-        });
-        
-        this.cancelBtn.addEventListener('click', () => {
+        };
+
+        this.cancelBtn.onclick = () => {
             this.close();
             if (settings.onCancel) settings.onCancel();
-        });
+        };
 
         this.open();
     },
 
-    
     prompt: function(options) {
         const defaults = {
             title: 'Enter Information',
@@ -129,8 +117,6 @@ const popup = {
         const settings = { ...defaults, ...options };
 
         this.title.textContent = settings.title;
-        
-        // Create content with form field
         this.content.innerHTML = `
             <div class="popup-form">
                 <div class="popup-form-group">
@@ -140,7 +126,6 @@ const popup = {
             </div>
         `;
 
-       
         this.actionButtons.innerHTML = `
             <button class="popup-btn popup-btn-secondary" id="popupCancel">${settings.cancelText}</button>
             <button class="popup-btn popup-btn-primary" id="popupConfirm">${settings.confirmText}</button>
@@ -149,22 +134,20 @@ const popup = {
         this.confirmBtn = document.getElementById('popupConfirm');
         this.cancelBtn = document.getElementById('popupCancel');
         const promptInput = document.getElementById('promptInput');
-        
-      
-        setTimeout(() => promptInput.focus(), 100);
-        
-        this.confirmBtn.addEventListener('click', () => {
+
+        promptInput.focus();
+
+        this.confirmBtn.onclick = () => {
             const value = promptInput.value;
             this.close();
             if (settings.onSubmit) settings.onSubmit(value);
-        });
-        
-        this.cancelBtn.addEventListener('click', () => {
+        };
+
+        this.cancelBtn.onclick = () => {
             this.close();
             if (settings.onCancel) settings.onCancel();
-        });
+        };
 
-     
         promptInput.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
                 this.confirmBtn.click();
@@ -187,165 +170,146 @@ const popup = {
         this.title.textContent = settings.title;
         this.content.innerHTML = settings.content;
 
-     
-        if (settings.width) {
-            this.container.style.maxWidth = settings.width;
-        } else {
-            this.container.style.maxWidth = '400px';
-        }
+        this.container.style.maxWidth = settings.width || '400px';
 
-       
         let buttonsHtml = '';
         settings.buttons.forEach(button => {
             const buttonClass = button.primary ? 'popup-btn-primary' : 'popup-btn-secondary';
             buttonsHtml += `<button class="popup-btn ${buttonClass}" id="${button.id}">${button.text}</button>`;
         });
-        
+
         this.actionButtons.innerHTML = buttonsHtml;
 
-      
         settings.buttons.forEach(button => {
             const buttonElement = document.getElementById(button.id);
-            buttonElement.addEventListener('click', () => {
+            buttonElement.onclick = () => {
                 if (button.closeOnClick !== false) {
                     this.close();
                 }
                 if (button.onClick) button.onClick();
-            });
+            };
         });
 
         this.open();
     },
 
-    // Show ticket details in popup
     viewTicket: function(ticket) {
         const dateObj = new Date(ticket.dateCreated);
         const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')} ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
-        
+
         const content = `
             <dl class="ticket-details">
                 <dt>Ticket ID:</dt>
                 <dd>${ticket.id}</dd>
-                
                 <dt>Raised by:</dt>
                 <dd>${ticket.fullName}</dd>
-                
                 <dt>Email:</dt>
                 <dd>${ticket.email}</dd>
-                
                 <dt>Phone:</dt>
                 <dd>${ticket.phone}</dd>
-                
                 <dt>Subject:</dt>
                 <dd>${ticket.subject}</dd>
-                
                 <dt>Date Created:</dt>
                 <dd>${formattedDate}</dd>
-                
                 <dt>Preferred Contact:</dt>
                 <dd>${ticket.preferredContact}</dd>
-                
                 <dt>Attachment:</dt>
                 <dd>${ticket.hasAttachment ? 'Yes' : 'No'}</dd>
             </dl>
-            
             <div>
                 <h4>Message:</h4>
                 <p>${ticket.message}</p>
             </div>
         `;
-        
+
         this.custom({
             title: `Ticket #${ticket.id} Details`,
             content: content,
-            width: '500px',
             buttons: [
                 {
                     id: 'ticketClose',
                     text: 'Close',
-                    primary: false
+                    primary: true
                 },
                 {
-                    id: 'ticketReply',
-                    text: 'Reply',
-                    primary: true,
-                    onClick: () => this.replyToTicket(ticket)
+                    id: 'ticketEdit',
+                    text: 'Edit',
+                    primary: false,
+                    onClick: () => this.editTicket(ticket)
                 }
             ]
         });
     },
 
-    // Reply to ticket popup
-    replyToTicket: function(ticket) {
-        const content = `
+    editTicket: function(ticket) {
+        this.title.textContent = `Edit Ticket #${ticket.id}`;
+        this.content.innerHTML = `
             <div class="popup-form">
                 <div class="popup-form-group">
-                    <label for="replyMethod">Reply Method:</label>
-                    <select id="replyMethod">
-                        <option value="email" ${ticket.preferredContact === 'Email' ? 'selected' : ''}>Email</option>
-                        <option value="phone" ${ticket.preferredContact === 'Phone' ? 'selected' : ''}>Phone</option>
-                    </select>
+                    <label for="editFullName">Full Name:</label>
+                    <input type="text" id="editFullName" value="${ticket.fullName}">
                 </div>
                 <div class="popup-form-group">
-                    <label for="replyMessage">Message:</label>
-                    <textarea id="replyMessage" rows="4" placeholder="Type your reply..."></textarea>
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" value="${ticket.email}">
+                </div>
+                <div class="popup-form-group">
+                    <label for="editPhone">Phone:</label>
+                    <input type="text" id="editPhone" value="${ticket.phone}">
+                </div>
+                <div class="popup-form-group">
+                    <label for="editSubject">Subject:</label>
+                    <input type="text" id="editSubject" value="${ticket.subject}">
+                </div>
+                <div class="popup-form-group">
+                    <label for="editMessage">Message:</label>
+                    <textarea id="editMessage" rows="4">${ticket.message}</textarea>
                 </div>
             </div>
         `;
-        
-        this.custom({
-            title: `Reply to Ticket #${ticket.id}`,
-            content: content,
-            width: '500px',
-            buttons: [
-                {
-                    id: 'cancelReply',
-                    text: 'Cancel',
-                    primary: false
-                },
-                {
-                    id: 'sendReply',
-                    text: 'Send Reply',
-                    primary: true,
-                    onClick: () => {
-                        const method = document.getElementById('replyMethod').value;
-                        const message = document.getElementById('replyMessage').value;
-                        
-                        if (!message.trim()) {
-                         
-                            this.alert({
-                                title: 'Error',
-                                message: 'Please enter a reply message.',
-                                icon: 'error'
-                            });
-                            return;
-                        }
-                        
-                  
-                        this.alert({
-                            title: 'Success',
-                            message: `Reply sent to ${ticket.fullName} via ${method === 'email' ? 'email' : 'phone call'}.`,
-                            icon: 'success'
-                        });
-                    }
-                }
-            ]
-        });
-    },
 
+        this.actionButtons.innerHTML = `
+            <button class="popup-btn popup-btn-secondary" id="popupCancel">Cancel</button>
+            <button class="popup-btn popup-btn-primary" id="popupConfirm">Save</button>
+        `;
+
+        this.confirmBtn = document.getElementById('popupConfirm');
+        this.cancelBtn = document.getElementById('popupCancel');
+
+        this.confirmBtn.onclick = () => {
+            ticket.fullName = document.getElementById('editFullName').value;
+            ticket.email = document.getElementById('editEmail').value;
+            ticket.phone = document.getElementById('editPhone').value;
+            ticket.subject = document.getElementById('editSubject').value;
+            ticket.message = document.getElementById('editMessage').value;
+
+            saveTicketsToStorage(); // Save updated tickets to storage
+            this.close();
+            popup.alert({
+                title: 'Success',
+                message: 'Ticket updated successfully!',
+                icon: 'success'
+            });
+            displayTickets(); // Refresh displayed tickets
+        };
+
+        this.cancelBtn.onclick = () => {
+            this.close();
+        };
+
+        this.open();
+    },
 
     open: function() {
         this.overlay.classList.add('active');
         document.body.style.overflow = 'hidden'; 
     },
 
-  
     close: function() {
         this.overlay.classList.remove('active');
         document.body.style.overflow = '';
     },
 
-  
     getIconClass: function(type) {
         switch(type) {
             case 'success': return 'check-circle';
@@ -361,93 +325,77 @@ const popup = {
 document.addEventListener('DOMContentLoaded', function() {
     popup.init();
     
-    
- 
     let activeFilters = false;
     let activeSorts = false;
 
-    
     const tableBody = document.getElementById('ticketTableBody');
     populateTicketTable(tickets);
     updateControlButtons();
 
     // Event listeners for sort, filter and refresh buttons
-    document.getElementById('sortButton').addEventListener('click', function() {
+    document.getElementById('sortButton').onclick = function() {
         if (activeSorts) {
-           
             clearSorts();
         } else {
-           
             document.getElementById('sortPopupOverlay').style.display = 'flex';
         }
-    });
+    };
     
-    document.getElementById('filterButton').addEventListener('click', function() {
+    document.getElementById('filterButton').onclick = function() {
         if (activeFilters) {
-            
             clearFilters();
         } else {
-           
             document.getElementById('filterPopupOverlay').style.display = 'flex';
         }
-    });
+    };
     
-    document.getElementById('refreshButton').addEventListener('click', function() {
-      
+    document.getElementById('refreshButton').onclick = function() {
         populateTicketTable(tickets);
-    });
+    };
 
     // Close buttons for popups
-    document.getElementById('sortPopupClose').addEventListener('click', function() {
+    document.getElementById('sortPopupClose').onclick = function() {
         document.getElementById('sortPopupOverlay').style.display = 'none';
-    });
+    };
     
-    document.getElementById('filterPopupClose').addEventListener('click', function() {
+    document.getElementById('filterPopupClose').onclick = function() {
         document.getElementById('filterPopupOverlay').style.display = 'none';
-    });
+    };
 
     // Submit buttons for sort and filter
-    document.getElementById('submitSortBtn').addEventListener('click', function() {
+    document.getElementById('submitSortBtn').onclick = function() {
         applySorting();
         document.getElementById('sortPopupOverlay').style.display = 'none';
-    });
+    };
 
-    document.getElementById('submitFilterBtn').addEventListener('click', function() {
+    document.getElementById('submitFilterBtn').onclick = function() {
         applyFilters();
         document.getElementById('filterPopupOverlay').style.display = 'none';
-    });
+    };
 
-    
     function applySorting() {
         activeSorts = true;
         updateControlButtons();
     }
 
-    
     function applyFilters() {
         activeFilters = true;
         updateControlButtons();
     }
 
-   
     function clearSorts() {
         activeSorts = false;
         updateControlButtons();
-        
         populateTicketTable(tickets);
     }
 
-    
     function clearFilters() {
         activeFilters = false;
         updateControlButtons();
-        
         populateTicketTable(tickets);
     }
 
-    
     function updateControlButtons() {
-        
         const sortButton = document.getElementById('sortButton');
         if (activeSorts) {
             sortButton.innerHTML = `<span class="active-filter-indicator">1 Sort <i class="fas fa-times"></i></span>`;
@@ -461,7 +409,6 @@ document.addEventListener('DOMContentLoaded', function() {
             sortButton.style.color = '';  
         }
     
-       
         const filterButton = document.getElementById('filterButton');
         if (activeFilters) {
             filterButton.innerHTML = `<span class="active-filter-indicator">1 Filter <i class="fas fa-times"></i></span>`;
@@ -483,64 +430,63 @@ document.addEventListener('DOMContentLoaded', function() {
         ticketData.forEach(ticket => {
             const row = document.createElement('tr');
             
-         
             const idCell = document.createElement('td');
             idCell.textContent = ticket.ticket_id;
             row.appendChild(idCell);
             
-       
             const raisedByCell = document.createElement('td');
             raisedByCell.innerHTML = `${ticket.raised_by}<br><span style="color: #666; font-size: 0.9em;">${ticket.email}</span>`;
             row.appendChild(raisedByCell);
             
-       
             const detailsCell = document.createElement('td');
             detailsCell.innerHTML = ticket.ticket_details.replace(/\n/g, '<br>');
             row.appendChild(detailsCell);
             
-          
             const dateCell = document.createElement('td');
             dateCell.textContent = ticket.date_created;
             row.appendChild(dateCell);
             
-         
             const actionsCell = document.createElement('td');
             actionsCell.className = 'actions-cell';
-            
-         
+
             const infoBtn = document.createElement('span');
             infoBtn.innerHTML = '<i class="fas fa-info-circle"></i>';
             infoBtn.className = 'action-icon';
+            infoBtn.onclick = () => popup.viewTicket(ticket);
             actionsCell.appendChild(infoBtn);
             
-          
             const downloadBtn = document.createElement('span');
             downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
             downloadBtn.className = 'action-icon';
+            downloadBtn.onclick = () => downloadAttachment(ticket);
             actionsCell.appendChild(downloadBtn);
             
-        
             const callBtn = document.createElement('span');
             callBtn.innerHTML = '<i class="fas fa-phone"></i>';
             callBtn.className = 'action-icon';
+            callBtn.onclick = () => popup.alert({
+                title: 'Calling',
+                message: `Initiating call to ${ticket.fullName} at ${ticket.phone}`,
+                icon: 'info',
+                buttonText: 'OK'
+            });
             actionsCell.appendChild(callBtn);
             
-         
             const emailBtn = document.createElement('span');
             emailBtn.innerHTML = '<i class="fas fa-envelope"></i>';
             emailBtn.className = 'action-icon';
+            emailBtn.onclick = () => sendEmail(ticket);
             actionsCell.appendChild(emailBtn);
             
-       
             const copyBtn = document.createElement('span');
             copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
             copyBtn.className = 'action-icon';
             actionsCell.appendChild(copyBtn);
             
-          
             const deleteBtn = document.createElement('span');
             deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
             deleteBtn.className = 'action-icon';
+            deleteBtn.onclick = () => deleteTicketWithConfirmation(ticket.id);
             actionsCell.appendChild(deleteBtn);
             
             row.appendChild(actionsCell);
@@ -554,12 +500,10 @@ let tickets = [];
 let currentTicketId = 1;
 let cryptoKey;
 
-
 // Initialize the application
 document.addEventListener('DOMContentLoaded', async function() {
     await loadTicketsFromStorage();
     
- 
     const isTicketForm = document.getElementById('ticketForm');
     const isTicketList = document.getElementById('ticketTableBody');
     
@@ -586,7 +530,6 @@ async function loadTicketsFromStorage() {
             const decryptedData = await decryptData(cryptoKey, combined);
             tickets = JSON.parse(decryptedData);
 
-         
             if (tickets.length > 0) {
                 const highestId = Math.max(...tickets.map(ticket => ticket.id));
                 currentTicketId = highestId + 1;
@@ -594,11 +537,11 @@ async function loadTicketsFromStorage() {
         }
     } catch (error) {
         console.error('Failed to load tickets from storage:', error);
-     
         localStorage.removeItem('tickets');
         tickets = [];
     }
 }
+
 // Save tickets to localStorage
 async function saveTicketsToStorage() {
     try {
@@ -614,7 +557,6 @@ async function saveTicketsToStorage() {
     }
 }
 
-
 // Setup the ticket form
 function setupTicketForm() {
     const ticketForm = document.getElementById('ticketForm');
@@ -622,21 +564,19 @@ function setupTicketForm() {
     const fileNameDisplay = document.querySelector('.file-name');
     const fileSelectButton = document.querySelector('.file-select-button');
     
-   
     fileInput.addEventListener('change', function(e) {
         const fileName = e.target.files.length > 0 ? e.target.files[0].name : 'No file chosen';
         fileNameDisplay.textContent = fileName;
     });
     
-    fileSelectButton.addEventListener('click', function() {
+    fileSelectButton.onclick = function() {
         fileInput.click();
-    });
+    };
     
     // Handle form submission
     ticketForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-    
         const fullName = document.getElementById('fullName').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -644,7 +584,6 @@ function setupTicketForm() {
         const message = document.getElementById('message').value;
         const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
         
-      
         const newTicket = {
             id: currentTicketId++,
             fullName: fullName,
@@ -657,17 +596,12 @@ function setupTicketForm() {
             dateCreated: new Date().toISOString()
         };
         
-      
         tickets.push(newTicket);
-        
-   
         await saveTicketsToStorage();
         
-   
         ticketForm.reset();
         fileNameDisplay.textContent = 'No file chosen';
         
-       
         popup.alert({
             title: 'Success',
             message: 'Your ticket has been submitted successfully!',
@@ -680,8 +614,7 @@ function setupTicketForm() {
     });
 }
 
-
-
+// Display tickets in the table
 function displayTickets() {
     const tableBody = document.getElementById('ticketTableBody');
     tableBody.innerHTML = '';
@@ -729,14 +662,8 @@ function displayTickets() {
         tableBody.appendChild(row);
     });
     
-    if (!document.querySelector('style#action-button-styles')) {
-        style.id = 'action-button-styles';
-        document.head.appendChild(style);
-    }
-    
     addActionButtonListeners();
 }
-
 // Add event listeners to ticket action buttons
 
 function addActionButtonListeners() {

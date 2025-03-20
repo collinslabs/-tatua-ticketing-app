@@ -42,20 +42,27 @@
             <table class="ticket-table">
                 <thead>
                     <tr>
-                        <th>Ticket ID</th>
-                        <th>Raised by</th>
-                        <th>Ticket Details</th>
-                        <th>Date Created</th>
-                        <th>Actions</th>
+                        <th>UserName</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Middle Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
                     </tr>
                 </thead>
-                <tbody id="ticketTableBody">
-                    <!-- Tickets will be populated here by JavaScript -->
+                <tbody id="peopleTableBody">
+                    <!-- People data will be populated here by JavaScript -->
                 </tbody>
             </table>
         </div>
 
-        <!-- Ticket context menu -->
+        <div class="pagination">
+            <button id="prevPage">Previous</button>
+            <span id="pageInfo"></span>
+            <button id="nextPage">Next</button>
+        </div>
+
+        <!-- Context Menu -->
         <div id="contextMenu" class="context-menu">
             <ul>
                 <li id="downloadAttachment">Download local attachment</li>
@@ -85,56 +92,56 @@
             </div>
         </div>
     </div>
+
     <!-- Sort Popup -->
-<div id="sortPopupOverlay" class="sort-popup-overlay">
-    <div class="sort-popup-container">
-        <div class="sort-popup-header">
-            <h3>Sort Table</h3>
-            <button id="sortPopupClose" class="sort-popup-close">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="sort-popup-body">
-            <div id="sortRows">
-                <!-- Sort rows will be added dynamically -->
-                <div class="sort-row">
-                    <div class="sort-column">
-                        <label>Column:</label>
-                        <select class="column-select">
-                            <option value="">Select Column</option>
-                            <option value="ticket_id">Ticket ID</option>
-                            <option value="raised_by">Raised by</option>
-                            <option value="ticket_details">Ticket Details</option>
-                            <option value="date_created">Date Created</option>
-                        </select>
-                    </div>
-                    <div class="sort-order">
-                        <label>Order:</label>
-                        <select class="order-select">
-                            <option value="">Select Order</option>
-                            <option value="ascending">Ascending</option>
-                            <option value="descending">Descending</option>
-                        </select>
-                    </div>
-                    <div class="sort-remove">
-                        <button class="remove-sort-btn">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
+    <div id="sortPopupOverlay" class="sort-popup-overlay">
+        <div class="sort-popup-container">
+            <div class="sort-popup-header">
+                <h3>Sort Table</h3>
+                <button id="sortPopupClose" class="sort-popup-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="sort-popup-body">
+                <div id="sortRows">
+                    <div class="sort-row">
+                        <div class="sort-column">
+                            <label>Column:</label>
+                            <select class="column-select">
+                                <option value="">Select Column</option>
+                                <option value="FirstName">First Name</option>
+                                <option value="LastName">Last Name</option>
+                                <option value="Gender">Gender</option>
+                                <option value="Age">Age</option>
+                            </select>
+                        </div>
+                        <div class="sort-order">
+                            <label>Order:</label>
+                            <select class="order-select">
+                                <option value="">Select Order</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                        <div class="sort-remove">
+                            <button class="remove-sort-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="add-sort-row">
-                <label id="addSortBtn">
-                    <i class="fas fa-plus"></i> Add Sorter
-                </label>
-            </div>
-            <div class="sort-actions">
-                <button class="sort-btn sort-btn-secondary" id="resetSortingBtn">Reset Sorting</button>
-                <button class="sort-btn sort-btn-primary" id="submitSortBtn">Submit</button>
+                <div class="add-sort-row">
+                    <button id="addSortBtn">
+                        <i class="fas fa-plus"></i> Add Sorter
+                    </button>
+                </div>
+                <div class="sort-actions">
+                    <button class="sort-btn sort-btn-secondary" id="resetSortingBtn">Reset Sorting</button>
+                    <button class="sort-btn sort-btn-primary" id="submitSortBtn">Submit</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Filter Popup -->
     <div id="filterPopupOverlay" class="filter-popup-overlay">
@@ -147,17 +154,15 @@
             </div>
             <div class="filter-popup-body">
                 <div id="filterRows">
-                    <!-- Filter rows will be added dynamically -->
                     <div class="filter-row">
                         <div class="filter-column">
                             <label>Column:</label>
                             <select class="column-select">
                                 <option value="">Select Column</option>
-                                <option value="ticket_id">Ticket ID</option>
-                                <option value="raised_by">Raised by</option>
-                                <option value="email_address">Email Address</option>
-                                <option value="ticket_details">Ticket Details</option>
-                                <option value="date_created">Date Created</option>
+                                <option value="FirstName">First Name</option>
+                                <option value="LastName">Last Name</option>
+                                <option value="Gender">Gender</option>
+                                <option value="Age">Age</option>
                             </select>
                         </div>
                         <div class="filter-relation">
@@ -195,7 +200,7 @@
             </div>
         </div>
     </div>
-    <script src="cryptoUtils.js"></script>
-    <script src="ticketScript.js"></script>
+
+    <script src="dataScript.js"></script>
 </body>
 </html>

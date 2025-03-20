@@ -531,8 +531,8 @@ input[type="file"] {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background-color: #5a2d81;
-    color: white;
+    background-color: #2F243A;
+    color: #DB8A74;
 }
 
 .filter-popup-header h3 {
@@ -541,11 +541,21 @@ input[type="file"] {
 }
 
 .filter-popup-close {
-    background: none;
+    background-color: #DB8A74;
+    color: #2F243A;
     border: none;
-    color: white;
-    font-size: 18px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    font-size: 16px;
+}
+
+.filter-popup-close:hover {
+    background-color: #DB8A74;
 }
 
 .filter-popup-body {
@@ -600,7 +610,7 @@ input[type="file"] {
 #addFilterBtn {
     background: none;
     border: none;
-    color: #5a2d81;
+    color: #2F243A;
     cursor: pointer;
     font-size: 14px;
     display: flex;
@@ -625,13 +635,12 @@ input[type="file"] {
 }
 
 .filter-btn-primary {
-    background-color: #5a2d81;
+    background-color: #4F227D;
     color: white;
 }
 
 .filter-btn-secondary {
-    background-color: #f0f0f0;
-    color: #333;
+    color: #7E1913;
 }
 
 
@@ -742,14 +751,15 @@ input[type="file"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 12px 16px;
+    background-color: #2F243A;
+    color: #DB8A74;
 }
 
 .sort-popup-header h3 {
     margin: 0;
     font-size: 18px;
-    color: #333;
+    color: #DB8A74;
 }
 
 .sort-popup-close {
@@ -802,7 +812,7 @@ input[type="file"] {
 .remove-sort-btn {
     background: none;
     border: none;
-    color: #ff4d4f;
+    color: #A10900;
     cursor: pointer;
     font-size: 16px;
     padding: 8px;
@@ -873,3 +883,47 @@ input[type="file"] {
     }
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination button {
+    background-color: #4F227D;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pagination button:hover {
+    background-color: #4F227D; 
+    transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    margin: 0 10px;
+    font-size: 16px;
+    color: #333; /* Text color */
+}
+
+@media (max-width: 600px) {
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination button {
+        width: 100%; 
+        margin: 5px 0;
+    }
+}
