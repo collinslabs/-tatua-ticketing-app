@@ -1,4 +1,4 @@
-// API and pagination configuration
+
 const apiUrl = 'https://services.odata.org/TripPinRESTierService/(S(olb0yty34pw25ka5nt0go11m))/People';
 let currentPage = 1;
 let pageSize = 10;
@@ -7,33 +7,33 @@ let currentSortCriteria = [];
 let currentFilterCriteria = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Load initial data
+  
     loadPeople();
 
-    // Set up sort button
+    
     document.getElementById('sortButton').addEventListener('click', () => {
         document.getElementById('sortPopupOverlay').style.display = 'flex';
     });
 
-    // Set up filter button
+  
     document.getElementById('filterButton').addEventListener('click', () => {
         document.getElementById('filterPopupOverlay').style.display = 'flex';
     });
 
-    // Close sort popup
+   
     document.getElementById('sortPopupClose').addEventListener('click', () => {
         document.getElementById('sortPopupOverlay').style.display = 'none';
     });
 
-    // Close filter popup
+   
     document.getElementById('filterPopupClose').addEventListener('click', () => {
         document.getElementById('filterPopupOverlay').style.display = 'none';
     });
 
-    // Add sort row
+ 
     document.getElementById('addSortBtn').addEventListener('click', addSortRow);
 
-    // Submit sort
+  
     document.getElementById('submitSortBtn').addEventListener('click', () => {
         updateSortCriteria();
         document.getElementById('sortPopupOverlay').style.display = 'none';
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadPeople();
     });
 
-    // Reset sorting
+ 
     document.getElementById('resetSortingBtn').addEventListener('click', () => {
         currentSortCriteria = [];
         document.querySelectorAll('.sort-row').forEach((row, index) => {
@@ -55,13 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         currentPage = 1;
-        loadPeople(); // Reload data without sorting
+        loadPeople(); 
     });
 
-    // Add filter row
+   
     document.getElementById('addFilterBtn').addEventListener('click', addFilterRow);
 
-    // Submit filter
+  
     document.getElementById('submitFilterBtn').addEventListener('click', () => {
         updateFilterCriteria();
         document.getElementById('filterPopupOverlay').style.display = 'none';
@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadPeople();
     });
 
-    // Reset filter
     document.getElementById('resetFilterBtn').addEventListener('click', () => {
         currentFilterCriteria = [];
         document.querySelectorAll('.filter-row').forEach((row, index) => {
@@ -85,14 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         currentPage = 1;
-        loadPeople(); // Reload data without filtering
+        loadPeople(); 
     });
 
-    // Set up context menu
+  
     setupContextMenu();
 });
 
-// Function to add a new sort row
+
 function addSortRow() {
     const sortRows = document.getElementById('sortRows');
     const newRow = document.createElement('div');
@@ -124,13 +123,13 @@ function addSortRow() {
     `;
     sortRows.appendChild(newRow);
 
-    // Add event listener to the new remove button
+   
     newRow.querySelector('.remove-sort-btn').addEventListener('click', function () {
         newRow.remove();
     });
 }
 
-// Function to add a new filter row
+
 function addFilterRow() {
     const filterRows = document.getElementById('filterRows');
     const newRow = document.createElement('div');
@@ -170,13 +169,13 @@ function addFilterRow() {
     `;
     filterRows.appendChild(newRow);
 
-    // Add event listener to the new remove button
+
     newRow.querySelector('.remove-filter-btn').addEventListener('click', function () {
         newRow.remove();
     });
 }
 
-// Function to update the sort criteria
+
 function updateSortCriteria() {
     currentSortCriteria = [];
     document.querySelectorAll('.sort-row').forEach(row => {
@@ -192,7 +191,7 @@ function updateSortCriteria() {
     });
 }
 
-// Function to update the filter criteria
+
 function updateFilterCriteria() {
     currentFilterCriteria = [];
     document.querySelectorAll('.filter-row').forEach(row => {
@@ -210,7 +209,7 @@ function updateFilterCriteria() {
     });
 }
 
-// Function to build the filter query for the API
+
 function buildFilterQuery() {
     if (currentFilterCriteria.length === 0) {
         return '';
@@ -238,7 +237,7 @@ function buildFilterQuery() {
     return filters.join(' and ');
 }
 
-// Function to build the sort query for the API
+
 function buildSortQuery() {
     if (currentSortCriteria.length === 0) {
         return '';
@@ -249,10 +248,10 @@ function buildSortQuery() {
     }).join(',');
 }
 
-// Function to load people data with sorting and filtering
+
 async function loadPeople() {
     try {
-        // Build OData query parameters
+   
         const filterQuery = buildFilterQuery();
         const sortQuery = buildSortQuery();
 
@@ -266,7 +265,7 @@ async function loadPeople() {
             url += `&$orderby=${sortQuery}`;
         }
 
-        // Fetch data
+      
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -275,13 +274,12 @@ async function loadPeople() {
 
         const data = await response.json();
 
-        // Update total records count for pagination
+        
         totalRecords = data['@odata.count'] || data.value.length;
 
-        // Render the people data
+      
         renderTable(data.value);
 
-        // Update pagination info
         updatePaginationInfo();
     } catch (error) {
         console.error('Error loading people:', error);
@@ -289,10 +287,10 @@ async function loadPeople() {
     }
 }
 
-// Function to render the table with people data
+
 function renderTable(people) {
     const tbody = document.getElementById('peopleTableBody');
-    tbody.innerHTML = ''; // Clear previous data
+    tbody.innerHTML = ''; 
 
     if (!people || people.length === 0) {
         const row = document.createElement('tr');
@@ -303,7 +301,7 @@ function renderTable(people) {
 
     people.forEach(person => {
         const row = document.createElement('tr');
-        row.dataset.id = person.UserName; // Store the ID for context menu actions
+        row.dataset.id = person.UserName; 
 
         row.innerHTML = `
             <td>${person.UserName || '-'}</td>
@@ -314,7 +312,7 @@ function renderTable(people) {
             <td>${person.Age || '-'}</td>
         `;
 
-        // Add context menu functionality to each row
+       
         row.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             showContextMenu(e, person);
@@ -324,17 +322,17 @@ function renderTable(people) {
     });
 }
 
-// Function to update pagination info
+
 function updatePaginationInfo() {
     const totalPages = Math.max(1, Math.ceil(totalRecords / pageSize));
     document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
 
-    // Enable/disable pagination buttons
+   
     document.getElementById('prevPage').disabled = currentPage <= 1;
     document.getElementById('nextPage').disabled = currentPage >= totalPages;
 }
 
-// Function to show a popup
+
 function showPopup(title, message) {
     const overlay = document.getElementById('popupOverlay');
     const popupTitle = document.getElementById('popupTitle');
@@ -352,16 +350,16 @@ function showPopup(title, message) {
     };
 }
 
-// Function to set up the context menu
+
 function setupContextMenu() {
     const contextMenu = document.getElementById('contextMenu');
 
-    // Hide context menu when clicking elsewhere
+   
     document.addEventListener('click', () => {
         contextMenu.style.display = 'none';
     });
 
-    // Set up context menu items
+ 
     document.getElementById('downloadAttachment').addEventListener('click', () => {
         const selectedRow = document.querySelector('tr.selected');
         if (selectedRow) {
@@ -408,25 +406,25 @@ function setupContextMenu() {
     });
 }
 
-// Function to show the context menu
+
 function showContextMenu(e, person) {
     const contextMenu = document.getElementById('contextMenu');
 
-    // Remove selected class from all rows
+  
     document.querySelectorAll('tr.selected').forEach(row => {
         row.classList.remove('selected');
     });
 
-    // Mark the current row as selected
+    
     e.currentTarget.classList.add('selected');
 
-    // Position the context menu
+    
     contextMenu.style.top = `${e.pageY}px`;
     contextMenu.style.left = `${e.pageX}px`;
     contextMenu.style.display = 'block';
 }
 
-// Function to get person data from a table row
+
 function getPersonFromRow(row) {
     return {
         UserName: row.cells[0].textContent,
@@ -438,7 +436,7 @@ function getPersonFromRow(row) {
     };
 }
 
-// Context menu action functions
+
 function downloadAttachment(person) {
     showPopup('Download Attachment', `Downloading attachment for ${person.FirstName} ${person.LastName}...`);
 }
@@ -465,10 +463,10 @@ function confirmDeleteTicket(person) {
 
 function deleteTicket(person) {
     showPopup('Delete Ticket', `Ticket for ${person.FirstName} ${person.LastName} has been deleted.`);
-    loadPeople(); // Refresh the table after deletion
+    loadPeople(); 
 }
 
-// Function to show a confirmation popup
+
 function showConfirmPopup(title, message, confirmCallback) {
     const overlay = document.getElementById('popupOverlay');
     const popupTitle = document.getElementById('popupTitle');
